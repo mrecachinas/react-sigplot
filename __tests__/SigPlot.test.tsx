@@ -269,7 +269,9 @@ describe('<SigPlot />', () => {
   });
 
   it('renders with HrefLayer', () => {
-    const overlayHrefSpy = vi.spyOn(Plot.prototype, 'overlay_href');
+    const overlayHrefSpy = vi
+      .spyOn(Plot.prototype, 'overlay_href')
+      .mockReturnValue(0);
     const options = {
       all: true,
       expand: true,

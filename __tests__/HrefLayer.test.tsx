@@ -15,7 +15,9 @@ describe('<HrefLayer />', () => {
     const plot = new Plot(element, {});
 
     const deoverlaySpy = vi.spyOn(Plot.prototype, 'deoverlay');
-    const overlayHrefSpy = vi.spyOn(Plot.prototype, 'overlay_href');
+    const overlayHrefSpy = vi
+      .spyOn(Plot.prototype, 'overlay_href')
+      .mockReturnValue(0);
 
     const hrefOne = '';
     const { rerender } = render(
@@ -45,7 +47,9 @@ describe('<HrefLayer />', () => {
     const plot = new Plot(element, {});
 
     const deoverlaySpy = vi.spyOn(Plot.prototype, 'deoverlay');
-    const overlayHrefSpy = vi.spyOn(Plot.prototype, 'overlay_href');
+    const overlayHrefSpy = vi
+      .spyOn(Plot.prototype, 'overlay_href')
+      .mockReturnValue(0);
 
     const hrefOne = 'dat/penny.prm';
     const options = {};
@@ -72,7 +76,9 @@ describe('<HrefLayer />', () => {
     const element = document.createElement('div');
     const plot = new Plot(element, {});
 
-    const overlayHrefSpy = vi.spyOn(Plot.prototype, 'overlay_href');
+    const overlayHrefSpy = vi
+      .spyOn(Plot.prototype, 'overlay_href')
+      .mockReturnValue(0);
 
     const hrefOne = '';
     const { rerender } = render(
