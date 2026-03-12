@@ -1,0 +1,57 @@
+import { useEffect, useRef } from 'react';
+import { usePlot } from './SigPlotContext';
+
+export interface WebsocketLayerProps {
+  wsurl?: string;
+  overrides?: Record<string, unknown>;
+  options?: Record<string, unknown>;
+}
+
+/**
+ * Wrapper around sigplot.Plot.overlay_websocket
+ *
+ *   <SigPlot>
+ *     <WebsocketLayer wsurl="ws://localhost:8080" />
+ *   </SigPlot>
+ */
+function WebsocketLayer({
+  wsurl = '',
+  overrides,
+  options,
+}: WebsocketLayerProps) {
+  const plot = usePlot();
+  const layerRef = useRef<number | null>(null);
+  const prevWsurlRef = useRef(wsurl);
+  const prevOptionsRef = useRef(options);
+
+  useEffect(() => {
+    layerRef.current = plot.overlay_websocket(wsurl, overrides, options);
+    return () => {
+      if (layerRef.current !== null) {
+        plot.remove_layer(layerRef.current);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (layerRef.current === null) return;
+
+    if (wsurl !== prevWsurlRef.current) {
+      plot.deoverlay(layerRef.current);
+      layerRef.current = plot.overlay_websocket(wsurl, overrides, options);
+    } else if (options !== prevOptionsRef.current) {
+      const layer = plot.get_layer(layerRef.current);
+      if (layer) {
+        layer.change_settings(options!);
+      }
+    }
+
+    prevWsurlRef.current = wsurl;
+    prevOptionsRef.current = options;
+  });
+
+  return null;
+}
+
+export default WebsocketLayer;
