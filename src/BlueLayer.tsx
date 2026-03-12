@@ -36,10 +36,12 @@ function BlueLayer({ data, options, layerOptions }: BlueLayerProps) {
 
     if (data !== prevDataRef.current) {
       plot.reload(layerRef.current, data as number[], options);
-    } else if (options !== prevOptionsRef.current) {
+    }
+    if (options !== prevOptionsRef.current) {
       plot.headermod(layerRef.current, options);
-    } else if (layerOptions !== prevLayerOptionsRef.current) {
-      plot.get_layer(layerRef.current).change_settings(layerOptions!);
+    }
+    if (layerOptions !== prevLayerOptionsRef.current && layerOptions != null) {
+      plot.get_layer(layerRef.current).change_settings(layerOptions);
     }
 
     prevDataRef.current = data;

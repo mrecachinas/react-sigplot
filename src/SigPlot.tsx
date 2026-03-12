@@ -53,6 +53,16 @@ function SigPlot({
       plotRef.current = new Plot(elementRef.current, options);
       setPlot(plotRef.current);
     }
+    return () => {
+      // sigplot's cleanup() is a no-op, so manually remove injected canvases
+      if (elementRef.current) {
+        while (elementRef.current.firstChild) {
+          elementRef.current.removeChild(elementRef.current.firstChild);
+        }
+      }
+      plotRef.current = null;
+      setPlot(null);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

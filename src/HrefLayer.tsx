@@ -42,8 +42,8 @@ function HrefLayer({
       layerRef.current = plot.overlay_href(href, onload, options);
     } else if (options !== prevOptionsRef.current) {
       const layer = plot.get_layer(layerRef.current);
-      if (layer) {
-        layer.change_settings(options!);
+      if (layer && options != null) {
+        layer.change_settings(options);
       }
     }
 

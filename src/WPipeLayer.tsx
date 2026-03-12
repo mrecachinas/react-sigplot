@@ -3,7 +3,6 @@ import { usePlot } from './SigPlotContext';
 
 export interface WPipeLayerProps {
   wsurl?: string;
-  overrides?: Record<string, unknown>;
   options?: Record<string, unknown>;
   layerOptions?: Record<string, unknown>;
   fps?: number;
@@ -13,7 +12,7 @@ export interface WPipeLayerProps {
  * Wrapper around sigplot.Plot.overlay_wpipe (internal, not exported)
  */
 function WPipeLayer({
-  wsurl,
+  wsurl = '',
   options,
   layerOptions,
   fps,
@@ -26,7 +25,7 @@ function WPipeLayer({
   const prevFpsRef = useRef(fps);
 
   useEffect(() => {
-    layerRef.current = plot.overlay_wpipe(wsurl!, options, layerOptions, fps);
+    layerRef.current = plot.overlay_wpipe(wsurl, options, layerOptions, fps);
     return () => {
       if (layerRef.current !== null) {
         plot.remove_layer(layerRef.current);
@@ -41,15 +40,17 @@ function WPipeLayer({
     if (wsurl !== prevWsurlRef.current || fps !== prevFpsRef.current) {
       plot.delete_layer(layerRef.current);
       layerRef.current = plot.overlay_wpipe(
-        wsurl!,
+        wsurl,
         options,
         layerOptions,
         fps
       );
-    } else if (options !== prevOptionsRef.current) {
+    }
+    if (options !== prevOptionsRef.current) {
       plot.headermod(layerRef.current, options);
-    } else if (layerOptions !== prevLayerOptionsRef.current) {
-      plot.get_layer(layerRef.current).change_settings(layerOptions!);
+    }
+    if (layerOptions !== prevLayerOptionsRef.current && layerOptions != null) {
+      plot.get_layer(layerRef.current).change_settings(layerOptions);
     }
 
     prevWsurlRef.current = wsurl;

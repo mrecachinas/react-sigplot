@@ -26,7 +26,7 @@ function PipeLayer({ data, options, layerOptions }: PipeLayerProps) {
   useEffect(() => {
     layerRef.current = plot.overlay_pipe(options, layerOptions);
 
-    if (data !== undefined && Array.isArray(data) && data.length > 0) {
+    if (data !== undefined && (Array.isArray(data) ? data.length > 0 : data instanceof ArrayBuffer)) {
       plot.push(layerRef.current, data);
     }
 
@@ -43,10 +43,12 @@ function PipeLayer({ data, options, layerOptions }: PipeLayerProps) {
 
     if (data && data !== prevDataRef.current) {
       plot.push(layerRef.current, data, options);
-    } else if (options !== prevOptionsRef.current) {
+    }
+    if (options !== prevOptionsRef.current) {
       plot.headermod(layerRef.current, options);
-    } else if (layerOptions !== prevLayerOptionsRef.current) {
-      plot.get_layer(layerRef.current).change_settings(layerOptions!);
+    }
+    if (layerOptions !== prevLayerOptionsRef.current && layerOptions != null) {
+      plot.get_layer(layerRef.current).change_settings(layerOptions);
     }
 
     prevDataRef.current = data;
