@@ -1,14 +1,19 @@
 react-sigplot
 ===============
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Build Status](https://travis-ci.org/LGSInnovations/react-sigplot.svg?branch=master)](https://travis-ci.org/LGSInnovations/react-sigplot) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](.github/CONTRIBUTING.md#pull-requests) [![npm version](https://badge.fury.io/js/react-sigplot.svg)](https://badge.fury.io/js/react-sigplot) [![codecov](https://codecov.io/gh/LGSInnovations/react-sigplot/branch/master/graph/badge.svg)](https://codecov.io/gh/LGSInnovations/react-sigplot)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](.github/CONTRIBUTING.md#pull-requests) [![npm version](https://badge.fury.io/js/react-sigplot.svg)](https://badge.fury.io/js/react-sigplot)
 
-SigPlot wrapper component for ReactJS.
+SigPlot wrapper component for React 19.
 
 Install: `npm install --save react-sigplot`
 
 ## What is it?
 
-Provides a component that wraps the SigPlot library.
+Provides React components that wrap the [SigPlot](https://github.com/LGSInnovations/sigplot) library. Layer components don't render DOM nodes — they perform imperative canvas operations on the parent `<SigPlot>` plot instance via React Context.
+
+## Requirements
+
+- React 19+
+- sigplot ^2.0.0
 
 ## Properties
 
@@ -19,14 +24,14 @@ Provides a component that wraps the SigPlot library.
 |`height`|`number`|300|Height of the `div` wrapping SigPlot|
 |`width`|`number`|300|Width of the `div` wrapping SigPlot|
 |`display`|`string`|inline-block|CSS display type for `div` wrapping SigPlot|
-|`styles`|`object`|`undefined`|any other CSS Styles as JS object|
+|`styles`|`CSSProperties`|`undefined`|any other CSS Styles as JS object|
 |`options`|`object`|`{all: true, expand: true, autol: 100, autohide_panbars: true}`|SigPlot `Plot` options|
 
 ### \<ArrayLayer />
 
 |Property|Type|Default|Explanation|
 |---|---|---|---|
-|`data`|`array(number)`|`undefined`|Array of values to plot|
+|`data`|`number[] \| number[][] \| ArrayBuffer`|`undefined`|Array of values to plot|
 |`options`|`object`|`undefined`|SigPlot data header|
 |`layerOptions`|`object`|`undefined`|SigPlot `Layer` options|
 
@@ -34,8 +39,9 @@ Provides a component that wraps the SigPlot library.
 
 |Property|Type|Default|Explanation|
 |---|---|---|---|
-|`data`|`array(number)`|`undefined`|Array of values to plot|
+|`data`|`number[] \| ArrayBuffer`|`undefined`|Array of values to plot|
 |`options`|`object`|`undefined`|SigPlot `Layer` options|
+|`layerOptions`|`object`|`undefined`|SigPlot `Layer` options|
 
 ### \<HrefLayer />
 
@@ -45,56 +51,95 @@ Provides a component that wraps the SigPlot library.
 |`onload`|`function`|`null`|Function that will get executed when file is loaded|
 |`options`|`object`|`undefined`|SigPlot `Layer` options|
 
+### \<BlueLayer />
+
+|Property|Type|Default|Explanation|
+|---|---|---|---|
+|`data`|`unknown`|`undefined`|Bluefile header container (HCB)|
+|`options`|`object`|`undefined`|SigPlot data header|
+|`layerOptions`|`object`|`undefined`|SigPlot `Layer` options|
+
 ### \<WebsocketLayer />
+
 |Property|Type|Default|Explanation|
 |---|---|---|---|
 |`wsurl`|`string`|`''`|URL to the websocket server|
 |`overrides`|`object`|`undefined`|SigPlot `Layer` overrides|
 |`options`|`object`|`undefined`|SigPlot `Layer` options|
 
-### \<WPipeLayer />
+### \<Plugin />
+
 |Property|Type|Default|Explanation|
 |---|---|---|---|
-|`wsurl`|`string`|`''`|URL to the websocket server|
-|`overrides`|`object`|`undefined`|SigPlot `Layer` overrides|
-|`options`|`object`|`undefined`|SigPlot `Layer` options|
-|`fps`|`number`|`undefined`|Frames per second for WPIPE|
+|`plugin`|`unknown`|required|A sigplot plugin instance|
+|`pluginOptions`|`object`|`undefined`|Plugin options|
+
+### Hooks
+
+- **`usePlot()`** — Returns the parent `Plot` instance from context. Use this in custom layer or plugin components.
+- **`SigPlotContext`** — The React context providing the `Plot` instance.
 
 ## Usage
 
 ### Basic
 
-```js
-/** Default plot an array three different ways
- * 1. As a standard array
- * 2. As a pipe
- * 3. As a file/url
- */
-<div>
-  <SigPlot options={{autol:1}}>
-    <ArrayLayer data={this.state.rasterData}/>
-  </SigPlot>
-  <SigPlot>
-    <PipeLayer options={{type: 2000, subsize: 1000}}
-      data={this.state.rasterData}/>
-  </SigPlot>
-  <SigPlot>
-    <HrefLayer
-      href={this.state.href}/>
-  </SigPlot>
-</div>
+```tsx
+import { SigPlot, ArrayLayer, PipeLayer, HrefLayer } from 'react-sigplot';
+
+function App() {
+  const [data, setData] = useState<number[]>([]);
+
+  return (
+    <div>
+      <SigPlot options={{ autol: 1 }}>
+        <ArrayLayer data={data} />
+      </SigPlot>
+      <SigPlot>
+        <PipeLayer
+          options={{ type: 2000, subsize: 1000 }}
+          data={data}
+        />
+      </SigPlot>
+      <SigPlot>
+        <HrefLayer href="/path/to/file.tmp" />
+      </SigPlot>
+    </div>
+  );
+}
+```
+
+### Custom Layer with usePlot
+
+```tsx
+import { useEffect, useRef } from 'react';
+import { usePlot } from 'react-sigplot';
+
+function MyCustomLayer({ data }: { data: number[] }) {
+  const plot = usePlot();
+  const layerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    layerRef.current = plot.overlay_array(data, {}, {});
+    return () => {
+      if (layerRef.current !== null) {
+        plot.remove_layer(layerRef.current);
+      }
+    };
+  }, []);
+
+  return null;
+}
+```
+
+## Development
+
+```bash
+npm install
+npm test          # Run tests
+npm run build     # Build library (ESM + UMD)
+npm run typecheck # Type check without emitting
 ```
 
 ## Example Preview
-
-If you run
-
-```
-$ npm run build
-$ python -m SimpleHTTPServer 8888
-```
-
-and in a browser, navigate to http://0.0.0.0:8888, you
-should see the following
 
 ![React Sigplot](https://raw.githubusercontent.com/spectriclabs/react-sigplot/master/docs/example.gif)
