@@ -29,5 +29,11 @@ export default defineConfig({
     globals: true,
     testTimeout: 30000,
     fileParallelism: false,
+    pool: 'forks',
+    poolOptions: {
+      forks: {
+        execArgv: ['--no-warnings'],
+      },
+    },
   },
 });
