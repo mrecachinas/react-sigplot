@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { usePlot } from './SigPlotContext';
 
 export interface WPipeLayerProps {
@@ -57,9 +57,10 @@ function WPipeLayer({
     prevOptionsRef.current = options;
     prevLayerOptionsRef.current = layerOptions;
     prevFpsRef.current = fps;
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wsurl, options, layerOptions, fps]);
 
   return null;
 }
 
-export default WPipeLayer;
+export default memo(WPipeLayer);

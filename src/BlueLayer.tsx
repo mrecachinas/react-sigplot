@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { usePlot } from './SigPlotContext';
 
 export interface BlueLayerProps {
@@ -47,9 +47,10 @@ function BlueLayer({ data, options, layerOptions }: BlueLayerProps) {
     prevDataRef.current = data;
     prevOptionsRef.current = options;
     prevLayerOptionsRef.current = layerOptions;
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, options, layerOptions]);
 
   return null;
 }
 
-export default BlueLayer;
+export default memo(BlueLayer);

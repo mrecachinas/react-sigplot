@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { usePlot } from './SigPlotContext';
 
 export interface HrefLayerProps {
@@ -49,9 +49,10 @@ function HrefLayer({
 
     prevHrefRef.current = href;
     prevOptionsRef.current = options;
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [href, onload, options]);
 
   return null;
 }
 
-export default HrefLayer;
+export default memo(HrefLayer);

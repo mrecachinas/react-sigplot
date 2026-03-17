@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { usePlot } from './SigPlotContext';
 
 export interface ArrayLayerProps {
@@ -49,9 +49,10 @@ function ArrayLayer({ data, options, layerOptions }: ArrayLayerProps) {
     prevDataRef.current = data;
     prevOptionsRef.current = options;
     prevLayerOptionsRef.current = layerOptions;
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, options, layerOptions]);
 
   return null;
 }
 
-export default ArrayLayer;
+export default memo(ArrayLayer);

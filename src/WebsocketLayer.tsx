@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { usePlot } from './SigPlotContext';
 
 export interface WebsocketLayerProps {
@@ -22,6 +22,7 @@ function WebsocketLayer({
   const plot = usePlot();
   const layerRef = useRef<number | null>(null);
   const prevWsurlRef = useRef(wsurl);
+  const prevOverridesRef = useRef(overrides);
   const prevOptionsRef = useRef(options);
 
   useEffect(() => {
@@ -37,7 +38,10 @@ function WebsocketLayer({
   useEffect(() => {
     if (layerRef.current === null) return;
 
-    if (wsurl !== prevWsurlRef.current) {
+    if (
+      wsurl !== prevWsurlRef.current ||
+      overrides !== prevOverridesRef.current
+    ) {
       plot.deoverlay(layerRef.current);
       layerRef.current = plot.overlay_websocket(wsurl, overrides, options);
     } else if (options !== prevOptionsRef.current) {
@@ -48,10 +52,12 @@ function WebsocketLayer({
     }
 
     prevWsurlRef.current = wsurl;
+    prevOverridesRef.current = overrides;
     prevOptionsRef.current = options;
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wsurl, overrides, options]);
 
   return null;
 }
 
-export default WebsocketLayer;
+export default memo(WebsocketLayer);

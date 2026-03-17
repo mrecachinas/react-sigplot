@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { usePlot } from './SigPlotContext';
 
 export interface PluginProps {
@@ -19,10 +19,9 @@ function Plugin({ plugin, pluginOptions }: PluginProps) {
     return () => {
       plot.remove_plugin(plugin);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [plot, plugin, pluginOptions]);
 
   return null;
 }
 
-export default Plugin;
+export default memo(Plugin);

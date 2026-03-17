@@ -43,10 +43,6 @@ function SigPlot({
   const elementRef = useRef<HTMLDivElement>(null);
   const plotRef = useRef<Plot | null>(null);
   const [plot, setPlot] = useState<Plot | null>(null);
-  const prevHeightRef = useRef(height);
-  const prevWidthRef = useRef(width);
-  const prevOptionsRef = useRef(options);
-
   // Create Plot instance on mount
   useEffect(() => {
     if (elementRef.current) {
@@ -66,22 +62,17 @@ function SigPlot({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Handle prop changes
+  // Handle dimension changes
   useEffect(() => {
     if (!plotRef.current) return;
+    plotRef.current.checkresize();
+  }, [height, width]);
 
-    if (height !== prevHeightRef.current || width !== prevWidthRef.current) {
-      plotRef.current.checkresize();
-    }
-
-    if (options !== prevOptionsRef.current) {
-      plotRef.current.change_settings(options);
-    }
-
-    prevHeightRef.current = height;
-    prevWidthRef.current = width;
-    prevOptionsRef.current = options;
-  });
+  // Handle options changes
+  useEffect(() => {
+    if (!plotRef.current) return;
+    plotRef.current.change_settings(options);
+  }, [options]);
 
   return (
     <div
