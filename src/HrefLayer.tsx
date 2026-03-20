@@ -14,16 +14,13 @@ export interface HrefLayerProps {
  *     <HrefLayer href="/path/to/file.tmp" />
  *   </SigPlot>
  */
-function HrefLayer({
-  href = '',
-  onload = null,
-  options,
-}: HrefLayerProps) {
+function HrefLayer({ href = '', onload = null, options }: HrefLayerProps) {
   const plot = usePlot();
   const layerRef = useRef<number | null>(null);
   const prevHrefRef = useRef(href);
   const prevOptionsRef = useRef(options);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: mount-only effect
   useEffect(() => {
     layerRef.current = plot.overlay_href(href, onload, options);
     return () => {
@@ -31,7 +28,6 @@ function HrefLayer({
         plot.remove_layer(layerRef.current);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -49,8 +45,7 @@ function HrefLayer({
 
     prevHrefRef.current = href;
     prevOptionsRef.current = options;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [href, onload, options]);
+  }, [href, onload, options, plot]);
 
   return null;
 }

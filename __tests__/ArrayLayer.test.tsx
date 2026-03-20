@@ -1,7 +1,6 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
-import React from 'react';
 import { render } from '@testing-library/react';
 import { Plot } from 'sigplot';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import ArrayLayer from '../src/ArrayLayer';
 import { SigPlotContext } from '../src/SigPlotContext';
 
@@ -22,7 +21,7 @@ describe('<ArrayLayer />', () => {
     const { rerender } = render(
       <SigPlotContext.Provider value={plot}>
         <ArrayLayer data={random} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(plot._Gx.lyr).toHaveLength(1);
@@ -37,7 +36,7 @@ describe('<ArrayLayer />', () => {
     rerender(
       <SigPlotContext.Provider value={plot}>
         <ArrayLayer data={random2} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(plot._Gx.lyr).toHaveLength(1);
@@ -58,7 +57,7 @@ describe('<ArrayLayer />', () => {
     const { rerender } = render(
       <SigPlotContext.Provider value={plot}>
         <ArrayLayer data={random} layerOptions={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(plot._Gx.lyr).toHaveLength(1);
@@ -67,7 +66,7 @@ describe('<ArrayLayer />', () => {
     rerender(
       <SigPlotContext.Provider value={plot}>
         <ArrayLayer data={random} layerOptions={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(plot._Gx.lyr[0].size).toBe(1000);
@@ -86,7 +85,7 @@ describe('<ArrayLayer />', () => {
     const { rerender } = render(
       <SigPlotContext.Provider value={plot}>
         <ArrayLayer data={random} layerOptions={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(plot._Gx.lyr).toHaveLength(1);
@@ -96,7 +95,7 @@ describe('<ArrayLayer />', () => {
     rerender(
       <SigPlotContext.Provider value={plot}>
         <ArrayLayer data={random} layerOptions={newOptions} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(plot._Gx.lyr[0].size).toBe(50);
@@ -119,7 +118,7 @@ describe('<ArrayLayer />', () => {
     const { rerender } = render(
       <SigPlotContext.Provider value={plot}>
         <ArrayLayer data={random} options={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(plot._Gx.lyr).toHaveLength(1);
@@ -133,7 +132,7 @@ describe('<ArrayLayer />', () => {
     rerender(
       <SigPlotContext.Provider value={plot}>
         <ArrayLayer data={random} options={newOptions} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(plot._Gx.lyr[0].hcb.subsize).toBe(100);

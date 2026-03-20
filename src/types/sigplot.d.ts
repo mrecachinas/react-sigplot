@@ -25,41 +25,41 @@ declare module 'sigplot' {
     overlay_array(
       data: number[] | number[][] | ArrayBuffer | undefined,
       options?: Record<string, unknown>,
-      layerOptions?: Record<string, unknown>
+      layerOptions?: Record<string, unknown>,
     ): number;
     overlay_bluefile(
       data: unknown,
-      layerOptions?: Record<string, unknown>
+      layerOptions?: Record<string, unknown>,
     ): number;
     overlay_pipe(
       options?: Record<string, unknown>,
-      layerOptions?: Record<string, unknown>
+      layerOptions?: Record<string, unknown>,
     ): number;
     overlay_href(
       href: string,
       onload?: ((hcb: unknown) => void) | null,
-      options?: Record<string, unknown>
+      options?: Record<string, unknown>,
     ): number;
     overlay_websocket(
       wsurl: string,
       overrides?: Record<string, unknown>,
-      options?: Record<string, unknown>
+      options?: Record<string, unknown>,
     ): number;
     overlay_wpipe(
       wsurl: string,
       options?: Record<string, unknown>,
       layerOptions?: Record<string, unknown>,
-      fps?: number
+      fps?: number,
     ): number;
     push(
       layer: number,
       data: number[] | ArrayBuffer,
-      options?: Record<string, unknown>
+      options?: Record<string, unknown>,
     ): void;
     reload(
       layer: number,
       data: number[] | number[][] | ArrayBuffer | undefined,
-      options?: Record<string, unknown>
+      options?: Record<string, unknown>,
     ): void;
     headermod(layer: number, options?: Record<string, unknown>): void;
     remove_layer(layer: number): void;

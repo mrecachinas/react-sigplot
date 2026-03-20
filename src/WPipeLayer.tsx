@@ -24,6 +24,7 @@ function WPipeLayer({
   const prevLayerOptionsRef = useRef(layerOptions);
   const prevFpsRef = useRef(fps);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: mount-only effect
   useEffect(() => {
     layerRef.current = plot.overlay_wpipe(wsurl, options, layerOptions, fps);
     return () => {
@@ -31,7 +32,6 @@ function WPipeLayer({
         plot.remove_layer(layerRef.current);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -39,12 +39,7 @@ function WPipeLayer({
 
     if (wsurl !== prevWsurlRef.current || fps !== prevFpsRef.current) {
       plot.delete_layer(layerRef.current);
-      layerRef.current = plot.overlay_wpipe(
-        wsurl,
-        options,
-        layerOptions,
-        fps
-      );
+      layerRef.current = plot.overlay_wpipe(wsurl, options, layerOptions, fps);
     }
     if (options !== prevOptionsRef.current) {
       plot.headermod(layerRef.current, options);
@@ -57,8 +52,7 @@ function WPipeLayer({
     prevOptionsRef.current = options;
     prevLayerOptionsRef.current = layerOptions;
     prevFpsRef.current = fps;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wsurl, options, layerOptions, fps]);
+  }, [wsurl, options, layerOptions, fps, plot]);
 
   return null;
 }

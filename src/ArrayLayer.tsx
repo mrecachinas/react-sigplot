@@ -23,6 +23,7 @@ function ArrayLayer({ data, options, layerOptions }: ArrayLayerProps) {
   const prevOptionsRef = useRef(options);
   const prevLayerOptionsRef = useRef(layerOptions);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: mount-only effect
   useEffect(() => {
     layerRef.current = plot.overlay_array(data, options, layerOptions);
     return () => {
@@ -30,7 +31,6 @@ function ArrayLayer({ data, options, layerOptions }: ArrayLayerProps) {
         plot.remove_layer(layerRef.current);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -49,8 +49,7 @@ function ArrayLayer({ data, options, layerOptions }: ArrayLayerProps) {
     prevDataRef.current = data;
     prevOptionsRef.current = options;
     prevLayerOptionsRef.current = layerOptions;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, options, layerOptions]);
+  }, [data, options, layerOptions, plot]);
 
   return null;
 }

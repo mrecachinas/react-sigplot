@@ -25,6 +25,7 @@ function WebsocketLayer({
   const prevOverridesRef = useRef(overrides);
   const prevOptionsRef = useRef(options);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: mount-only effect
   useEffect(() => {
     layerRef.current = plot.overlay_websocket(wsurl, overrides, options);
     return () => {
@@ -32,7 +33,6 @@ function WebsocketLayer({
         plot.remove_layer(layerRef.current);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -54,8 +54,7 @@ function WebsocketLayer({
     prevWsurlRef.current = wsurl;
     prevOverridesRef.current = overrides;
     prevOptionsRef.current = options;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wsurl, overrides, options]);
+  }, [wsurl, overrides, options, plot]);
 
   return null;
 }

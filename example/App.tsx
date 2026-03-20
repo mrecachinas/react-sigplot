@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { SigPlot, ArrayLayer, PipeLayer, HrefLayer } from '../src';
+import { useEffect, useState } from 'react';
+import { ArrayLayer, HrefLayer, PipeLayer, SigPlot } from '../src';
 
 export default function App() {
   const [rasterData, setRasterData] = useState<number[]>([]);
@@ -41,10 +41,7 @@ export default function App() {
         />
       </SigPlot>
       <SigPlot>
-        <PipeLayer
-          options={{ type: 2000, subsize: 1000 }}
-          data={rasterData}
-        />
+        <PipeLayer options={{ type: 2000, subsize: 1000 }} data={rasterData} />
       </SigPlot>
       <SigPlot width={width}>
         <HrefLayer href={href} />

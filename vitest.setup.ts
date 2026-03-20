@@ -5,13 +5,12 @@ import 'vitest-canvas-mock';
 // { width: 0 } from measureText, causing an infinite loop. Patch it to return
 // a width proportional to the font size.
 const origGetContext = HTMLCanvasElement.prototype.getContext;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 HTMLCanvasElement.prototype.getContext = function (
   this: HTMLCanvasElement,
   type: string,
   ...args: unknown[]
 ) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: forwarding to native getContext
   const ctx = (origGetContext as any).call(this, type, ...args);
   if (ctx && type === '2d') {
     let currentFontSize = 10;

@@ -1,9 +1,8 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
-import React from 'react';
 import { render } from '@testing-library/react';
 import { Plot } from 'sigplot';
-import WebsocketLayer from '../src/WebsocketLayer';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SigPlotContext } from '../src/SigPlotContext';
+import WebsocketLayer from '../src/WebsocketLayer';
 
 describe('<WebsocketLayer />', () => {
   afterEach(() => {
@@ -22,7 +21,7 @@ describe('<WebsocketLayer />', () => {
     const { rerender } = render(
       <SigPlotContext.Provider value={plot}>
         <WebsocketLayer wsurl={websocketURL} options={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(plot._Gx.lyr).toHaveLength(1);
@@ -31,7 +30,7 @@ describe('<WebsocketLayer />', () => {
     rerender(
       <SigPlotContext.Provider value={plot}>
         <WebsocketLayer wsurl={websocketURL} options={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     // No additional overlay_websocket calls since wsurl is same
@@ -51,7 +50,7 @@ describe('<WebsocketLayer />', () => {
     const { rerender } = render(
       <SigPlotContext.Provider value={plot}>
         <WebsocketLayer wsurl={websocketURL} options={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(plot._Gx.lyr).toHaveLength(1);
@@ -60,7 +59,7 @@ describe('<WebsocketLayer />', () => {
     rerender(
       <SigPlotContext.Provider value={plot}>
         <WebsocketLayer wsurl={websocketURL2} options={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(deoverlaySpy).toHaveBeenCalled();
@@ -78,7 +77,7 @@ describe('<WebsocketLayer />', () => {
       render(
         <SigPlotContext.Provider value={plot}>
           <WebsocketLayer wsurl="" />
-        </SigPlotContext.Provider>
+        </SigPlotContext.Provider>,
       );
     }).toThrow();
 
@@ -98,7 +97,7 @@ describe('<WebsocketLayer />', () => {
     const { rerender } = render(
       <SigPlotContext.Provider value={plot}>
         <WebsocketLayer wsurl={websocketURL} options={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(plot._Gx.lyr).toHaveLength(1);
@@ -108,7 +107,7 @@ describe('<WebsocketLayer />', () => {
     rerender(
       <SigPlotContext.Provider value={plot}>
         <WebsocketLayer wsurl={websocketURL} options={newOptions} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(deoverlaySpy).toHaveBeenCalledTimes(0);

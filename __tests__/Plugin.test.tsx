@@ -1,7 +1,6 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
-import React from 'react';
 import { render } from '@testing-library/react';
 import { Plot } from 'sigplot';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import Plugin from '../src/Plugin';
 import { SigPlotContext } from '../src/SigPlotContext';
 
@@ -22,7 +21,7 @@ describe('<Plugin />', () => {
     render(
       <SigPlotContext.Provider value={plot}>
         <Plugin plugin={mockPlugin} pluginOptions={pluginOptions} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(addPluginSpy).toHaveBeenCalledTimes(1);
@@ -41,7 +40,7 @@ describe('<Plugin />', () => {
     const { unmount } = render(
       <SigPlotContext.Provider value={plot}>
         <Plugin plugin={mockPlugin} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     unmount();

@@ -23,10 +23,14 @@ function PipeLayer({ data, options, layerOptions }: PipeLayerProps) {
   const prevOptionsRef = useRef(options);
   const prevLayerOptionsRef = useRef(layerOptions);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: mount-only effect
   useEffect(() => {
     layerRef.current = plot.overlay_pipe(options, layerOptions);
 
-    if (data !== undefined && (Array.isArray(data) ? data.length > 0 : data instanceof ArrayBuffer)) {
+    if (
+      data !== undefined &&
+      (Array.isArray(data) ? data.length > 0 : data instanceof ArrayBuffer)
+    ) {
       plot.push(layerRef.current, data);
     }
 
@@ -35,7 +39,6 @@ function PipeLayer({ data, options, layerOptions }: PipeLayerProps) {
         plot.remove_layer(layerRef.current);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -54,8 +57,7 @@ function PipeLayer({ data, options, layerOptions }: PipeLayerProps) {
     prevDataRef.current = data;
     prevOptionsRef.current = options;
     prevLayerOptionsRef.current = layerOptions;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, options, layerOptions]);
+  }, [data, options, layerOptions, plot]);
 
   return null;
 }

@@ -1,7 +1,6 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
-import React from 'react';
 import { render } from '@testing-library/react';
 import { Plot } from 'sigplot';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import BlueLayer from '../src/BlueLayer';
 import { SigPlotContext } from '../src/SigPlotContext';
 
@@ -20,7 +19,7 @@ describe('<BlueLayer />', () => {
     render(
       <SigPlotContext.Provider value={plot}>
         <BlueLayer data={data} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(overlayBluefileSpy).toHaveBeenCalledTimes(1);
@@ -39,7 +38,7 @@ describe('<BlueLayer />', () => {
     const { rerender } = render(
       <SigPlotContext.Provider value={plot}>
         <BlueLayer data={data1} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(reloadSpy).toHaveBeenCalledTimes(0);
@@ -47,7 +46,7 @@ describe('<BlueLayer />', () => {
     rerender(
       <SigPlotContext.Provider value={plot}>
         <BlueLayer data={data2} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(reloadSpy).toHaveBeenCalledTimes(1);
@@ -57,7 +56,9 @@ describe('<BlueLayer />', () => {
     const element = document.createElement('div');
     const plot = new Plot(element, {});
 
-    const headermodSpy = vi.spyOn(plot, 'headermod').mockImplementation(() => {});
+    const headermodSpy = vi
+      .spyOn(plot, 'headermod')
+      .mockImplementation(() => {});
 
     const data = { buf: new ArrayBuffer(128) };
     const options = {};
@@ -65,14 +66,14 @@ describe('<BlueLayer />', () => {
     const { rerender } = render(
       <SigPlotContext.Provider value={plot}>
         <BlueLayer data={data} options={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     const newOptions = { subsize: 100 };
     rerender(
       <SigPlotContext.Provider value={plot}>
         <BlueLayer data={data} options={newOptions} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(headermodSpy).toHaveBeenCalledTimes(1);
@@ -90,13 +91,13 @@ describe('<BlueLayer />', () => {
     const { rerender } = render(
       <SigPlotContext.Provider value={plot}>
         <BlueLayer data={data} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     rerender(
       <SigPlotContext.Provider value={plot}>
         <BlueLayer data={data} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(reloadSpy).toHaveBeenCalledTimes(0);
@@ -114,7 +115,7 @@ describe('<BlueLayer />', () => {
     const { unmount } = render(
       <SigPlotContext.Provider value={plot}>
         <BlueLayer data={data} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     unmount();

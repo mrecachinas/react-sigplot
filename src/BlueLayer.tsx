@@ -21,6 +21,7 @@ function BlueLayer({ data, options, layerOptions }: BlueLayerProps) {
   const prevOptionsRef = useRef(options);
   const prevLayerOptionsRef = useRef(layerOptions);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: mount-only effect
   useEffect(() => {
     layerRef.current = plot.overlay_bluefile(data, layerOptions);
     return () => {
@@ -28,7 +29,6 @@ function BlueLayer({ data, options, layerOptions }: BlueLayerProps) {
         plot.remove_layer(layerRef.current);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -47,8 +47,7 @@ function BlueLayer({ data, options, layerOptions }: BlueLayerProps) {
     prevDataRef.current = data;
     prevOptionsRef.current = options;
     prevLayerOptionsRef.current = layerOptions;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, options, layerOptions]);
+  }, [data, options, layerOptions, plot]);
 
   return null;
 }

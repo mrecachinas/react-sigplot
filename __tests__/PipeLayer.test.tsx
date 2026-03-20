@@ -1,7 +1,6 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
-import React from 'react';
 import { render } from '@testing-library/react';
 import { Plot } from 'sigplot';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import PipeLayer from '../src/PipeLayer';
 import { SigPlotContext } from '../src/SigPlotContext';
 
@@ -21,7 +20,7 @@ describe('<PipeLayer />', () => {
     const { rerender } = render(
       <SigPlotContext.Provider value={plot}>
         <PipeLayer data={data} options={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(plot._Gx.lyr).toHaveLength(1);
@@ -32,7 +31,7 @@ describe('<PipeLayer />', () => {
     rerender(
       <SigPlotContext.Provider value={plot}>
         <PipeLayer data={data} options={newOptions} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(headermodSpy).toHaveBeenCalledTimes(1);
@@ -48,7 +47,7 @@ describe('<PipeLayer />', () => {
     const { rerender } = render(
       <SigPlotContext.Provider value={plot}>
         <PipeLayer data={data} options={options} layerOptions={layerOptions} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(plot._Gx.lyr).toHaveLength(1);
@@ -57,8 +56,12 @@ describe('<PipeLayer />', () => {
     const newLayerOptions = { drawmode: 'righttoleft' };
     rerender(
       <SigPlotContext.Provider value={plot}>
-        <PipeLayer data={data} options={options} layerOptions={newLayerOptions} />
-      </SigPlotContext.Provider>
+        <PipeLayer
+          data={data}
+          options={options}
+          layerOptions={newLayerOptions}
+        />
+      </SigPlotContext.Provider>,
     );
 
     expect(plot._Gx.lyr[0].drawmode).toBe(newLayerOptions.drawmode);
@@ -73,7 +76,7 @@ describe('<PipeLayer />', () => {
     const { rerender } = render(
       <SigPlotContext.Provider value={plot}>
         <PipeLayer data={twoDimensionalData} options={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(plot._Gx.lyr).toHaveLength(1);
@@ -87,7 +90,7 @@ describe('<PipeLayer />', () => {
     rerender(
       <SigPlotContext.Provider value={plot}>
         <PipeLayer data={random} options={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(plot._Gx.lyr).toHaveLength(1);
@@ -110,7 +113,7 @@ describe('<PipeLayer />', () => {
     const { rerender } = render(
       <SigPlotContext.Provider value={plot}>
         <PipeLayer data={random} options={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(plot._Gx.lyr).toHaveLength(1);
@@ -120,7 +123,7 @@ describe('<PipeLayer />', () => {
     rerender(
       <SigPlotContext.Provider value={plot}>
         <PipeLayer data={random} options={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(pushSpy.mock.calls.length).toBe(pushCountAfterMount);

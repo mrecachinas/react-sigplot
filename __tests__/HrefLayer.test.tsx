@@ -1,7 +1,6 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
-import React from 'react';
 import { render } from '@testing-library/react';
 import { Plot } from 'sigplot';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import HrefLayer from '../src/HrefLayer';
 import { SigPlotContext } from '../src/SigPlotContext';
 
@@ -23,7 +22,7 @@ describe('<HrefLayer />', () => {
     const { rerender } = render(
       <SigPlotContext.Provider value={plot}>
         <HrefLayer href={hrefOne} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(deoverlaySpy).toHaveBeenCalledTimes(0);
@@ -34,7 +33,7 @@ describe('<HrefLayer />', () => {
     rerender(
       <SigPlotContext.Provider value={plot}>
         <HrefLayer href={hrefTwo} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(deoverlaySpy).toHaveBeenCalledTimes(1);
@@ -56,7 +55,7 @@ describe('<HrefLayer />', () => {
     const { rerender } = render(
       <SigPlotContext.Provider value={plot}>
         <HrefLayer href={hrefOne} options={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(deoverlaySpy).toHaveBeenCalledTimes(0);
@@ -65,7 +64,7 @@ describe('<HrefLayer />', () => {
     rerender(
       <SigPlotContext.Provider value={plot}>
         <HrefLayer href={hrefOne} options={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(deoverlaySpy).toHaveBeenCalledTimes(0);
@@ -84,7 +83,7 @@ describe('<HrefLayer />', () => {
     const { rerender } = render(
       <SigPlotContext.Provider value={plot}>
         <HrefLayer href={hrefOne} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     expect(overlayHrefSpy).toHaveBeenCalledTimes(1);
@@ -97,7 +96,7 @@ describe('<HrefLayer />', () => {
     rerender(
       <SigPlotContext.Provider value={plot}>
         <HrefLayer href={hrefOne} options={options} />
-      </SigPlotContext.Provider>
+      </SigPlotContext.Provider>,
     );
 
     // Href didn't change, so no additional overlay_href call

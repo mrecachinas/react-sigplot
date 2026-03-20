@@ -1,9 +1,9 @@
 import {
+  type CSSProperties,
+  type ReactNode,
+  useEffect,
   useRef,
   useState,
-  useEffect,
-  type ReactNode,
-  type CSSProperties,
 } from 'react';
 import { Plot } from 'sigplot';
 import { SigPlotContext } from './SigPlotContext';
@@ -44,6 +44,7 @@ function SigPlot({
   const plotRef = useRef<Plot | null>(null);
   const [plot, setPlot] = useState<Plot | null>(null);
   // Create Plot instance on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: mount-only effect
   useEffect(() => {
     if (elementRef.current) {
       plotRef.current = new Plot(elementRef.current, options);
@@ -59,10 +60,10 @@ function SigPlot({
       plotRef.current = null;
       setPlot(null);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Handle dimension changes
+  // biome-ignore lint/correctness/useExhaustiveDependencies: re-check resize when dimensions change
   useEffect(() => {
     if (!plotRef.current) return;
     plotRef.current.checkresize();
